@@ -12,6 +12,6 @@ $T_z=\left\langle\hat{T}_z\right\rangle=\left\langle\frac{1}{2}[\sigma-3 \hat{\m
 3. Run the code SD.py (after you run: pip install -r requirements.txt)
 
 *
-$$
+$
 T_z &=\frac12\int d^3r\; m_z(\mathbf r)\Bigl[1-3\hat r_z^{\,2}\Bigr]\\[4pt] &=\frac12\int d^3r\; m_z(\mathbf r)\,\bigl[1-3\cos^2\theta\bigr]. \end{aligned}
-$$
+$
