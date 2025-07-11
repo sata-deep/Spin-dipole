@@ -1,5 +1,6 @@
 # Spin-dipole
 **Compute atomic spin-dipole term Tz for a non-collinear (SOC) DFT calculation**
+
 This code (SD.py) calculates the dipole term from the output of the VASP calculation.
 
 The dipole term is given by:
