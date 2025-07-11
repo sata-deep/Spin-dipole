@@ -9,4 +9,4 @@ $T_z=\left\langle\hat{T}_z\right\rangle=\left\langle\frac{1}{2}[\sigma-3 \hat{\m
 **The procedure is as follows:**
 1. Perform a SOC-enabled calculation for the system
 2. Extract the cube files for Mx, My, and Mz components (tweak the chg2cube.pl script from VTST a little bit)
-3. Run the code SD.py 
+3. Run the code SD.py
