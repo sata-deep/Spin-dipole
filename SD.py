@@ -3,8 +3,9 @@
 Compute the atomic spin-dipole term Tz for a non-collinear (SOC) DFT calculation.
 
 Expected inputs in the working directory
-    Mx.cube  My.cube  Mz.cube   – spin-density components (μB / Å³)
+    [Mx.cube,  My.cube,  Mz.cube]  – spin-density components (μB / Å³)
     POSCAR                     – atomic positions (Å)  [ASE readable]
+    PyMatgen should be installed with pip install requirements.txt (as it works with slightly older version)
 Adapt RWIGS{} to your PAW radii.
 """
 import sys
