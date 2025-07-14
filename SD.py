@@ -71,7 +71,7 @@ r_cart = (ix[..., None] * axes[0] +
 # 4.  Integrate Tz inside each PAW sphere  ----------------------------
 # ----------------------------------------------------------------------
 tz_cell = 0.0
-np.seterr(divide="ignore", invalid="ignore")        # silent 0/0 inside nuclei
+np.seterr(divide="ignore", invalid="ignore")        
 
 for idx, (sym, pos) in enumerate(zip(symbols, positions), start=1):
     dvec = r_cart - pos                             # r − R_a
