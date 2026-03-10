@@ -8,7 +8,6 @@ Expected inputs in the working directory
     PyMatgen should be installed with pip install requirements.txt (as it works with slightly older version)
 Adapt RWIGS{} to your PAW radii.
 """
-import sys
 import numpy as np
 from pymatgen.io.common import VolumetricData          # Cube loader
 from ase.io import read                                # POSCAR reader
@@ -48,7 +47,10 @@ vol_per_voxel = abs(np.linalg.det(axes))            # Å³
 # ----------------------------------------------------------------------
 atoms     = read(poscar)
 symbols   = atoms.get_chemical_symbols()
-positions = atoms.get_positions()                   # Å
+scaled_positions = atoms.get_scaled_positions(wrap=True)
+
+if not np.allclose(atoms.cell.array, lattice):
+    raise ValueError("POSCAR lattice does not match the CUBE lattice.")
 
 # This is an example for a system with Pd and Co only. Please make your directory
 # according to your POSCAR file.
@@ -57,15 +59,15 @@ RWIGS = {                                           # radii in Å
     "Pd": 2.710,
     "Co": 2.100,
 }
-default_rwigs = 2.0
+missing_species = sorted(set(symbols) - set(RWIGS))
+if missing_species:
+    raise KeyError(f"Missing RWIGS entries for species: {', '.join(missing_species)}")
 
 # ----------------------------------------------------------------------
 # 3.  Pre-compute voxel Cartesian coordinates  ------------------------
 # ----------------------------------------------------------------------
 ix, iy, iz = np.indices(mx.dim)
-r_cart = (ix[..., None] * axes[0] +
-          iy[..., None] * axes[1] +
-          iz[..., None] * axes[2])                  # (Nx,Ny,Nz,3)
+grid_frac = np.stack((ix / nx, iy / ny, iz / nz), axis=-1)
 
 # ----------------------------------------------------------------------
 # 4.  Integrate Tz inside each PAW sphere  ----------------------------
@@ -73,10 +75,12 @@ r_cart = (ix[..., None] * axes[0] +
 tz_cell = 0.0
 np.seterr(divide="ignore", invalid="ignore")        
 
-for idx, (sym, pos) in enumerate(zip(symbols, positions), start=1):
-    dvec = r_cart - pos                             # r − R_a
+for idx, (sym, spos) in enumerate(zip(symbols, scaled_positions), start=1):
+    delta_frac = grid_frac - spos
+    delta_frac -= np.round(delta_frac)              # minimum-image convention
+    dvec = delta_frac @ lattice                     # r − R_a with PBC
     r2   = np.einsum("...i,...i->...", dvec, dvec)  # |dvec|²
-    mask = r2 < (RWIGS.get(sym, default_rwigs))**2
+    mask = r2 < RWIGS[sym]**2
 
     # unit radial vector  r̂
     rhat = np.zeros_like(dvec)
