@@ -11,5 +11,5 @@ $\mathbf m(\mathbf r)=\bigl\langle\hat{\mathbf m}(\mathbf r)\bigr\rangle =\langl
 **The procedure is as follows:**
 1. Perform a SOC-enabled calculation for the system
 2. Extract the cube files for Mx, My, and Mz components (tweak the chg2cube.pl script from VTST a little bit)
-3. Run the code SD.py (after you run: pip install -r requirements.txt)
+3. Run the code SD.py (Before you run: pip install -r requirements.txt)
 
